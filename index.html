@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Theft Auto VI | Bienvenido a Leonida</title>
+    <!-- Carga de Tailwind CSS para diseño responsivo y utilidades -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuentes de Google: Outfit para títulos modernos y Plus Jakarta Sans para lectura fluida -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Iconos de Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Configuración personalizada de Tailwind para la paleta Vice City -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Outfit"', 'sans-serif'],
+                    },
+                    colors: {
+                        vice: {
+                            dark: '#090414',
+                            purple: '#16092b',
+                            card: '#1f0d3d',
+                            pink: '#ff2a85',
+                            cyan: '#00f0ff',
+                            sunset: '#ff7b00',
+                            gold: '#ffd500'
+                        }
+                    },
+                    backgroundImage: {
+                        'vice-gradient': 'linear-gradient(135deg, #ff2a85 0%, #ff7b00 50%, #00f0ff 100%)',
+                        'vice-text': 'linear-gradient(to right, #ff2a85, #ff8e53, #00f0ff)',
+                        'hero-glow': 'radial-gradient(circle at 50% 30%, rgba(255, 42, 133, 0.25) 0%, rgba(0, 240, 255, 0.1) 45%, rgba(9, 4, 20, 1) 80%)',
+                    },
+                    boxShadow: {
+                        'neon-pink': '0 0 20px rgba(255, 42, 133, 0.45)',
+                        'neon-cyan': '0 0 20px rgba(0, 240, 255, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-vice-dark text-slate-100 antialiased selection:bg-vice-pink selection:text-white overflow-x-hidden">
+
+    <!-- ENCABEZADO DE NAVEGACIÓN FIJO -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-vice-dark/80 backdrop-blur-md border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logotipo / Marca -->
+                <a href="#inicio" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-vice-pink to-vice-cyan p-0.5 shadow-neon-pink group-hover:scale-105 transition-transform">
+                        <div class="w-full h-full bg-vice-dark rounded-[10px] flex items-center justify-center">
+                            <span class="font-display font-black text-lg bg-vice-text bg-clip-text text-transparent">VI</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-display font-black text-xl tracking-wider text-white leading-none">GTA <span class="text-vice-pink">VI</span></span>
+                        <span class="text-[10px] uppercase tracking-[0.25em] text-vice-cyan font-semibold">Leonida State</span>
+                    </div>
+                </a>
+
+                <!-- Navegación Desktop -->
+                <nav class="hidden md:flex items-center space-x-8" aria-label="Navegación principal">
+                    <a href="#inicio" class="text-sm font-medium text-slate-300 hover:text-vice-cyan transition-colors">Inicio</a>
+                    <a href="#historia" class="text-sm font-medium text-slate-300 hover:text-vice-pink transition-colors">Historia</a>
+                    <a href="#leonida" class="text-sm font-medium text-slate-300 hover:text-vice-cyan transition-colors">Leonida & Vice City</a>
+                    <a href="#caracteristicas" class="text-sm font-medium text-slate-300 hover:text-vice-pink transition-colors">Características</a>
+                    <a href="#lanzamiento" class="text-sm font-medium text-slate-300 hover:text-vice-cyan transition-colors">Lanzamiento</a>
+                </nav>
+
+                <!-- Botón CTA Header y Menú Móvil -->
+                <div class="flex items-center gap-4">
+                    <button onclick="openTrailerModal()" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-vice-pink to-vice-sunset text-white font-semibold text-sm shadow-neon-pink hover:brightness-110 active:scale-95 transition-all">
+                        <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+                        <span>Ver Tráiler</span>
+                    </button>
+
+                    <!-- Botón Hamburguesa Móvil -->
+                    <button id="mobile-menu-btn" aria-label="Abrir menú" class="md:hidden p-2.5 rounded-xl bg-white/5 border border-white/10 text-slate-200 hover:text-vice-pink transition-colors">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-vice-purple/95 backdrop-blur-xl border-b border-white/10 px-4 pt-2 pb-6 space-y-2">
+            <a href="#inicio" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-slate-200 hover:bg-white/5 hover:text-vice-cyan">Inicio</a>
+            <a href="#historia" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-slate-200 hover:bg-white/5 hover:text-vice-pink">Historia: Lucia & Jason</a>
+            <a href="#leonida" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-slate-200 hover:bg-white/5 hover:text-vice-cyan">Leonida & Vice City</a>
+            <a href="#caracteristicas" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-slate-200 hover:bg-white/5 hover:text-vice-pink">Características</a>
+            <a href="#lanzamiento" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-slate-200 hover:bg-white/5 hover:text-vice-cyan">Lanzamiento</a>
+            <div class="pt-2">
+                <button onclick="openTrailerModal()" class="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-vice-pink to-vice-sunset text-white font-semibold text-base shadow-neon-pink">
+                    <i data-lucide="play" class="w-5 h-5 fill-current"></i>
+                    <span>Ver Tráiler Oficial</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <!-- SECCIÓN HERO -->
+        <section id="inicio" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden bg-hero-glow">
+            <!-- Elementos decorativos de fondo (Palmeras estilizadas y resplandores neón) -->
+            <div class="absolute top-1/4 -left-32 w-96 h-96 bg-vice-pink/20 rounded-full blur-[120px] pointer-events-none"></div>
+            <div class="absolute bottom-1/4 -right-32 w-96 h-96 bg-vice-cyan/20 rounded-full blur-[120px] pointer-events-none"></div>
+            
+            <!-- Rejilla retro sutil en la parte inferior -->
+            <div class="absolute inset-x-0 bottom-0 h-64 bg-[linear-gradient(to_right,rgba(0,240,255,0.07)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,42,133,0.07)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:linear-gradient(to_top,black,transparent)] pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <!-- Etiqueta superior -->
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-vice-cyan/30 backdrop-blur-sm mb-8">
+                    <span class="w-2 h-2 rounded-full bg-vice-cyan animate-ping"></span>
+                    <span class="text-xs sm:text-sm font-semibold tracking-wider uppercase text-vice-cyan">Rockstar Games Presenta</span>
+                </div>
+
+                <!-- Título Principal -->
+                <h1 class="font-display font-black text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight uppercase leading-[0.95] mb-6">
+                    <span class="block text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">Grand Theft</span>
+                    <span class="block bg-vice-text bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(255,42,133,0.4)]">Auto VI</span>
+                </h1>
+
+                <!-- Subtítulo -->
+                <p class="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-slate-300 font-normal leading-relaxed mb-10">
+                    Regresa a las calles bañadas por el sol y las noches eléctricas de <strong class="text-white font-semibold">Vice City</strong>. Vive la evolución más ambiciosa e inmersiva de la saga en el vibrante estado de <strong class="text-vice-cyan font-semibold">Leonida</strong>.
+                </p>
+
+                <!-- Botones de Acción Hero -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+                    <a href="#historia" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-vice-pink via-vice-sunset to-vice-pink bg-[length:200%_auto] hover:bg-right text-white font-bold text-base shadow-neon-pink transition-all duration-500 flex items-center justify-center gap-2">
+                        <span>Explorar el Juego</span>
+                        <i data-lucide="arrow-down-right" class="w-5 h-5"></i>
+                    </a>
+                    <button onclick="openTrailerModal()" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-vice-purple/80 hover:bg-vice-card border border-vice-cyan/40 text-white font-bold text-base shadow-neon-cyan transition-all flex items-center justify-center gap-3">
+                        <i data-lucide="tv" class="w-5 h-5 text-vice-cyan"></i>
+                        <span>Tráiler Oficial 1</span>
+                    </button>
+                </div>
+
+                <!-- Tarjeta visual destacada / Banner atmosférico -->
+                <div class="mt-16 max-w-5xl mx-auto rounded-3xl p-1 bg-gradient-to-r from-vice-pink via-purple-500 to-vice-cyan shadow-2xl">
+                    <div class="relative rounded-[22px] overflow-hidden bg-vice-purple aspect-[16/9] sm:aspect-[21/9] flex items-end p-6 sm:p-10 text-left">
+                        <img 
+                            src="https://images.unsplash.com/photo-1514214246283-d427a95c5d2f?auto=format&fit=crop&w=1600&q=80" 
+                            alt="Atardecer neón sobre palmeras y rascacielos costeros estilo Vice City" 
+                            onerror="this.src='https://placehold.co/1600x700/16092b/ff2a85?text=VICE+CITY+-+ESTADO+DE+LEONIDA'"
+                            class="absolute inset-0 w-full h-full object-cover opacity-65 mix-blend-luminosity hover:scale-105 transition-transform duration-700"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-vice-dark via-vice-dark/50 to-transparent"></div>
+                        <div class="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between w-full gap-4">
+                            <div>
+                                <span class="inline-block px-3 py-1 rounded-lg bg-vice-pink/90 text-white text-xs font-bold uppercase tracking-wider mb-2">Bienvenido a Vice</span>
+                                <h2 class="font-display font-bold text-2xl sm:text-3xl text-white">Donde el neón nunca se apaga</h2>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-vice-cyan font-medium bg-vice-dark/80 backdrop-blur-md px-4 py-2.5 rounded-xl border border-white/10">
+                                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                <span>Vice-Dale County, Leonida</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN INFORMATIVA PRINCIPAL -->
+        <section id="historia" class="py-20 sm:py-28 relative border-t border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Encabezado de Sección: Historia -->
+                <div class="max-w-3xl mb-16">
+                    <span class="text-vice-pink font-bold uppercase tracking-widest text-xs sm:text-sm">La Trama</span>
+                    <h2 class="font-display font-black text-3xl sm:text-5xl text-white mt-2 mb-4">
+                        Una historia de crimen, lealtad y supervivencia
+                    </h2>
+                    <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+                        Por primera vez en la era moderna de Grand Theft Auto, la narrativa gira en torno a una pareja de criminales al estilo <em>Bonnie y Clyde</em>, atrapados en una conspiración que se extiende por todo el estado de Leonida.
+                    </p>
+                </div>
+
+                <!-- Grid de Protagonistas: Lucia y Jason -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-24">
+                    <!-- Tarjeta Lucia -->
+                    <article class="group relative rounded-3xl bg-vice-purple/60 border border-vice-pink/30 p-6 sm:p-8 hover:border-vice-pink transition-all duration-300 overflow-hidden">
+                        <div class="absolute top-0 right-0 w-48 h-48 bg-vice-pink/15 rounded-full blur-3xl group-hover:bg-vice-pink/25 transition-all"></div>
+                        <div class="relative z-10 flex flex-col sm:flex-row gap-6 items-start">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-vice-pink to-vice-sunset p-0.5 shrink-0 shadow-neon-pink">
+                                <div class="w-full h-full bg-vice-dark rounded-[14px] flex items-center justify-center">
+                                    <i data-lucide="user-check" class="w-10 h-10 text-vice-pink"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-white">Lucia Caminos</h3>
+                                    <span class="px-2.5 py-0.5 rounded-full bg-vice-pink/20 text-vice-pink text-xs font-bold">Protagonista</span>
+                                </div>
+                                <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+                                    La primera protagonista femenina principal de la franquicia en 3D. Tras salir de la penitenciaría de Leonida por luchar por su familia, Lucia está decidida a tomar el control de su destino mediante golpes calculados y sangre fría.
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs px-3 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/10">Estratega</span>
+                                    <span class="text-xs px-3 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/10">Determinada</span>
+                                    <span class="text-xs px-3 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/10">Combate Cercano</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Tarjeta Jason -->
+                    <article class="group relative rounded-3xl bg-vice-purple/60 border border-vice-cyan/30 p-6 sm:p-8 hover:border-vice-cyan transition-all duration-300 overflow-hidden">
+                        <div class="absolute top-0 right-0 w-48 h-48 bg-vice-cyan/15 rounded-full blur-3xl group-hover:bg-vice-cyan/25 transition-all"></div>
+                        <div class="relative z-10 flex flex-col sm:flex-row gap-6 items-start">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-vice-cyan to-blue-600 p-0.5 shrink-0 shadow-neon-cyan">
+                                <div class="w-full h-full bg-vice-dark rounded-[14px] flex items-center justify-center">
+                                    <i data-lucide="shield-alert" class="w-10 h-10 text-vice-cyan"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-white">Jason Duval</h3>
+                                    <span class="px-2.5 py-0.5 rounded-full bg-vice-cyan/20 text-vice-cyan text-xs font-bold">Co-Protagonista</span>
+                                </div>
+                                <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+                                    Criado entre estafadores y delincuentes de poca monta, Jason busca una salida rápida hacia una vida mejor. Su química y confianza mutua con Lucia serán su mayor fortaleza —y su mayor debilidad— cuando todo salga mal.
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs px-3 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/10">Conducción Extrema</span>
+                                    <span class="text-xs px-3 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/10">Instinto Callejero</span>
+                                    <span class="text-xs px-3 py-1 rounded-lg bg-white/5 text-slate-300 border border-white/10">Lealtad</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- SUBSECCIÓN: EL ESTADO DE LEONIDA Y VICE CITY -->
+                <div id="leonida" class="scroll-mt-28 mb-24">
+                    <div class="rounded-3xl bg-gradient-to-br from-vice-purple to-vice-dark border border-white/10 p-6 sm:p-12 relative overflow-hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                            <div class="lg:col-span-7 space-y-6">
+                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-vice-cyan/10 border border-vice-cyan/30 text-vice-cyan text-xs font-bold uppercase tracking-wider">
+                                    <i data-lucide="compass" class="w-4 h-4"></i>
+                                    <span>Mundo Abierto Masivo</span>
+                                </div>
+                                <h3 class="font-display font-black text-3xl sm:text-4xl text-white leading-tight">
+                                    El Estado de Leonida & <span class="text-vice-pink">Vice City</span>
+                                </h3>
+                                <p class="text-slate-300 text-base leading-relaxed">
+                                    Inspirado en Florida, <strong>Leonida</strong> es el mapa más grande, denso y vivo jamás creado por Rockstar Games. Más allá del glamour de <strong>Vice City</strong>, sus playas de arena blanca y sus clubes nocturnos iluminados con neón, se extiende un territorio salvaje lleno de contrastes.
+                                </p>
+                                
+                                <!-- Regiones destacadas -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                                        <h4 class="font-display font-bold text-white flex items-center gap-2 mb-1">
+                                            <span class="w-2 h-2 rounded-full bg-vice-pink"></span>
+                                            Ocean Beach & Downtown
+                                        </h4>
+                                        <p class="text-xs sm:text-sm text-slate-400">Arquitectura Art Déco, autos exóticos, yates de lujo y vida nocturna desenfrenada.</p>
+                                    </div>
+                                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                                        <h4 class="font-display font-bold text-white flex items-center gap-2 mb-1">
+                                            <span class="w-2 h-2 rounded-full bg-vice-cyan"></span>
+                                            Grassrivers & Los Cayos
+                                        </h4>
+                                        <p class="text-xs sm:text-sm text-slate-400">Pantanos infestados de caimanes, aerodeslizadores y carreteras costeras interminables.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta interactiva de zonas -->
+                            <div class="lg:col-span-5">
+                                <div class="rounded-2xl bg-vice-dark/90 border border-vice-pink/30 p-6 shadow-neon-pink">
+                                    <h4 class="font-display font-bold text-lg text-white mb-4 flex items-center justify-between">
+                                        <span>Directorio de Leonida</span>
+                                        <span class="text-xs font-mono text-vice-cyan">MAPA v6.0</span>
+                                    </h4>
+                                    <ul class="space-y-3 text-sm">
+                                        <li class="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-vice-pink/10 transition-colors">
+                                            <span class="font-medium text-white">Vice City Metro</span>
+                                            <span class="text-xs text-vice-pink font-semibold">Metrópolis Neón</span>
+                                        </li>
+                                        <li class="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-vice-cyan/10 transition-colors">
+                                            <span class="font-medium text-white">Port Vice City</span>
+                                            <span class="text-xs text-vice-cyan font-semibold">Zona Industrial</span>
+                                        </li>
+                                        <li class="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-vice-pink/10 transition-colors">
+                                            <span class="font-medium text-white">Leonida Keys</span>
+                                            <span class="text-xs text-vice-sunset font-semibold">Archipiélago Sur</span>
+                                        </li>
+                                        <li class="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-vice-cyan/10 transition-colors">
+                                            <span class="font-medium text-white">Kelly County</span>
+                                            <span class="text-xs text-purple-400 font-semibold">Zona Rural</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBSECCIÓN: CARACTERÍSTICAS PRINCIPALES -->
+                <div id="caracteristicas" class="scroll-mt-28 mb-24">
+                    <div class="text-center max-w-3xl mx-auto mb-14">
+                        <span class="text-vice-cyan font-bold uppercase tracking-widest text-xs sm:text-sm">Innovación Técnica</span>
+                        <h3 class="font-display font-black text-3xl sm:text-4xl text-white mt-2 mb-4">
+                            Características Principales
+                        </h3>
+                        <p class="text-slate-300 text-base">
+                            Impulsado por la nueva generación del motor RAGE, GTA VI redefine el realismo visual, la inteligencia artificial y la interacción social.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Característica 1 -->
+                        <div class="p-6 rounded-3xl bg-vice-purple/50 border border-white/10 hover:border-vice-pink/60 transition-all group">
+                            <div class="w-12 h-12 rounded-2xl bg-vice-pink/15 text-vice-pink flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                                <i data-lucide="sparkles" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-display font-bold text-xl text-white mb-2">Motor RAGE 9</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">
+                                Iluminación global con trazado de rayos, física del agua en tiempo real y ciclos climáticos dinámicos con tormentas tropicales.
+                            </p>
+                        </div>
+
+                        <!-- Característica 2 -->
+                        <div class="p-6 rounded-3xl bg-vice-purple/50 border border-white/10 hover:border-vice-cyan/60 transition-all group">
+                            <div class="w-12 h-12 rounded-2xl bg-vice-cyan/15 text-vice-cyan flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                                <i data-lucide="smartphone" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-display font-bold text-xl text-white mb-2">Redes Sociales In-Game</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">
+                                Sigue transmisiones en vivo, tendencias virales y las locuras de los habitantes de Leonida directamente desde tu teléfono dentro del juego.
+                            </p>
+                        </div>
+
+                        <!-- Característica 3 -->
+                        <div class="p-6 rounded-3xl bg-vice-purple/50 border border-white/10 hover:border-vice-sunset/60 transition-all group">
+                            <div class="w-12 h-12 rounded-2xl bg-vice-sunset/15 text-vice-sunset flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                                <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-display font-bold text-xl text-white mb-2">IA y Multitudes Vivas</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">
+                                Cientos de NPCs con rutinas propias, reacciones policiales tácticas y ecosistemas animales salvajes totalmente reactivos.
+                            </p>
+                        </div>
+
+                        <!-- Característica 4 -->
+                        <div class="p-6 rounded-3xl bg-vice-purple/50 border border-white/10 hover:border-purple-400/60 transition-all group">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-500/15 text-purple-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                                <i data-lucide="car-front" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-display font-bold text-xl text-white mb-2">Vehículos y Tuning</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">
+                                Desde superdeportivos clásicos de los 80 hasta lanchas rápidas, helicópteros y personalización mecánica y estética al detalle.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBSECCIÓN: FECHA DE LANZAMIENTO Y PLATAFORMAS -->
+                <div id="lanzamiento" class="scroll-mt-28">
+                    <div class="rounded-3xl p-1 bg-gradient-to-r from-vice-cyan via-vice-pink to-vice-sunset shadow-neon-pink">
+                        <div class="rounded-[22px] bg-vice-dark p-8 sm:p-12 text-center relative overflow-hidden">
+                            <div class="relative z-10 max-w-3xl mx-auto">
+                                <span class="inline-block px-4 py-1.5 rounded-full bg-vice-pink/20 border border-vice-pink/40 text-vice-pink text-xs font-bold uppercase tracking-widest mb-4">
+                                    Ventana de Lanzamiento Confirmada
+                                </span>
+                                <h3 class="font-display font-black text-4xl sm:text-6xl text-white tracking-tight mb-4">
+                                    OTOÑO <span class="bg-vice-text bg-clip-text text-transparent">2025</span>
+                                </h3>
+                                <p class="text-slate-300 text-base sm:text-lg mb-8">
+                                    Prepárate para sumergirte en la próxima generación del entretenimiento interactivo. Disponible inicialmente en consolas de actual generación.
+                                </p>
+
+                                <!-- Badges de Plataformas -->
+                                <div class="flex flex-wrap items-center justify-center gap-4 mb-8">
+                                    <div class="flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-white/5 border border-white/15 text-white font-display font-bold">
+                                        <i data-lucide="gamepad-2" class="w-5 h-5 text-vice-cyan"></i>
+                                        <span>PlayStation 5</span>
+                                    </div>
+                                    <div class="flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-white/5 border border-white/15 text-white font-display font-bold">
+                                        <i data-lucide="gamepad" class="w-5 h-5 text-vice-pink"></i>
+                                        <span>Xbox Series X|S</span>
+                                    </div>
+                                </div>
+
+                                <!-- Formulario rápido de notificación sin alert() -->
+                                <form id="notify-form" class="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
+                                    <input 
+                                        type="email" 
+                                        id="email-input"
+                                        required
+                                        placeholder="Tu correo electrónico..." 
+                                        class="flex-1 px-4 py-3.5 rounded-xl bg-vice-purple border border-white/15 text-white placeholder-slate-400 focus:outline-none focus:border-vice-cyan text-sm"
+                                    >
+                                    <button type="submit" class="px-6 py-3.5 rounded-xl bg-vice-cyan text-vice-dark font-bold text-sm hover:brightness-110 transition-all shrink-0">
+                                        Avísame
+                                    </button>
+                                </form>
+                                <p id="form-feedback" class="hidden mt-3 text-sm font-medium text-vice-cyan"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- PIE DE PÁGINA COMPLETO -->
+    <footer class="bg-vice-purple/40 border-t border-white/10 pt-16 pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+                <!-- Columna 1: Identidad -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-vice-pink to-vice-cyan flex items-center justify-center font-display font-black text-vice-dark">
+                            VI
+                        </div>
+                        <span class="font-display font-black text-xl text-white">GTA <span class="text-vice-pink">VI</span> HUB</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Portal informativo dedicado a Grand Theft Auto VI, el estado de Leonida y la icónica Vice City. Estética neón inspirada en la costa sur.
+                    </p>
+                    <!-- Redes Sociales -->
+                    <div class="flex items-center gap-3 pt-2">
+                        <a href="#inicio" aria-label="YouTube" class="p-2.5 rounded-xl bg-white/5 hover:bg-vice-pink/20 text-slate-300 hover:text-vice-pink transition-colors">
+                            <i data-lucide="youtube" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#inicio" aria-label="Instagram" class="p-2.5 rounded-xl bg-white/5 hover:bg-vice-cyan/20 text-slate-300 hover:text-vice-cyan transition-colors">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#inicio" aria-label="Twitter / X" class="p-2.5 rounded-xl bg-white/5 hover:bg-vice-pink/20 text-slate-300 hover:text-vice-pink transition-colors">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Columna 2: Navegación -->
+                <div>
+                    <h4 class="font-display font-bold text-white uppercase tracking-wider text-sm mb-4">Explorar</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="#inicio" class="hover:text-vice-cyan transition-colors">Inicio</a></li>
+                        <li><a href="#historia" class="hover:text-vice-pink transition-colors">Lucia y Jason</a></li>
+                        <li><a href="#leonida" class="hover:text-vice-cyan transition-colors">Mapa de Leonida</a></li>
+                        <li><a href="#caracteristicas" class="hover:text-vice-pink transition-colors">Novedades Técnicas</a></li>
+                        <li><a href="#lanzamiento" class="hover:text-vice-cyan transition-colors">Fecha de Salida</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 3: Distritos de Vice City -->
+                <div>
+                    <h4 class="font-display font-bold text-white uppercase tracking-wider text-sm mb-4">Distritos</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><span class="hover:text-slate-200 cursor-default">Ocean Beach</span></li>
+                        <li><span class="hover:text-slate-200 cursor-default">Vice Beach</span></li>
+                        <li><span class="hover:text-slate-200 cursor-default">Little Haiti</span></li>
+                        <li><span class="hover:text-slate-200 cursor-default">Starfish Island</span></li>
+                        <li><span class="hover:text-slate-200 cursor-default">Grassrivers</span></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 4: Clasificación y Aviso -->
+                <div class="space-y-4">
+                    <h4 class="font-display font-bold text-white uppercase tracking-wider text-sm">Clasificación</h4>
+                    <div class="inline-flex items-center gap-3 p-3 rounded-2xl bg-vice-dark border border-white/15">
+                        <div class="w-12 h-14 rounded-lg bg-white text-vice-dark font-display font-black text-2xl flex items-center justify-center shrink-0">
+                            M
+                        </div>
+                        <div class="text-xs text-slate-300 leading-tight">
+                            <strong class="block text-white mb-0.5">Mature 17+ (ESRB)</strong>
+                            Sangre, violencia intensa, lenguaje fuerte y contenido adulto.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra Inferior Copyright -->
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+                <p>&copy; 2025 GTA VI Fan Showcase. Todos los derechos de Grand Theft Auto y Rockstar Games pertenecen a Take-Two Interactive.</p>
+                <div class="flex items-center gap-6">
+                    <a href="#inicio" class="hover:text-slate-300 transition-colors">Privacidad</a>
+                    <a href="#inicio" class="hover:text-slate-300 transition-colors">Términos</a>
+                    <a href="#inicio" class="hover:text-slate-300 transition-colors">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL PERSONALIZADO PARA TRÁILER (Sin alert/confirm) -->
+    <div id="trailer-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-vice-dark/90 backdrop-blur-lg">
+        <div class="relative w-full max-w-3xl rounded-3xl bg-vice-purple border border-vice-pink/50 p-6 sm:p-8 shadow-neon-pink">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-vice-pink animate-pulse"></span>
+                    <h3 class="font-display font-bold text-lg sm:text-xl text-white">Grand Theft Auto VI — Tráiler Oficial 1</h3>
+                </div>
+                <button onclick="closeTrailerModal()" aria-label="Cerrar modal" class="p-2 rounded-xl bg-white/5 hover:bg-vice-pink/20 text-slate-300 hover:text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <!-- Contenedor de vista previa del tráiler -->
+            <div class="relative aspect-video rounded-2xl overflow-hidden bg-vice-dark border border-white/10 flex flex-col items-center justify-center text-center p-6">
+                <div class="absolute inset-0 bg-gradient-to-tr from-vice-pink/20 via-transparent to-vice-cyan/20"></div>
+                <i data-lucide="film" class="w-14 h-14 text-vice-cyan mb-4 relative z-10"></i>
+                <p class="font-display font-bold text-xl text-white mb-2 relative z-10">"Love Is A Long Road" — Bienvenido a Leonida</p>
+                <p class="text-sm text-slate-300 max-w-md mb-6 relative z-10">
+                    Disfruta del primer vistazo oficial a Lucia, Jason y las vibrantes calles de Vice City en resolución 4K.
+                </p>
+                <a href="https://www.youtube.com/watch?v=QdBZY2fkU-0" target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-vice-pink text-white font-bold text-sm hover:brightness-110 transition-all shadow-neon-pink">
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                    <span>Abrir en YouTube Oficial</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS DE INTERACTIVIDAD -->
+    <script>
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
+
+        // Control del menú móvil
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Control del Modal de Tráiler
+        const trailerModal = document.getElementById('trailer-modal');
+
+        function openTrailerModal() {
+            trailerModal.classList.remove('hidden');
+            trailerModal.classList.add('flex');
+            mobileMenu.classList.add('hidden');
+        }
+
+        function closeTrailerModal() {
+            trailerModal.classList.add('hidden');
+            trailerModal.classList.remove('flex');
+        }
+
+        // Cerrar modal al hacer clic fuera del contenedor
+        trailerModal.addEventListener('click', (e) => {
+            if (e.target === trailerModal) {
+                closeTrailerModal();
+            }
+        });
+
+        // Manejo del formulario de notificación con mensaje integrado
+        const notifyForm = document.getElementById('notify-form');
+        const emailInput = document.getElementById('email-input');
+        const formFeedback = document.getElementById('form-feedback');
+
+        notifyForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = emailInput.value.trim();
+            if (email) {
+                formFeedback.textContent = `¡Listo! Te avisaremos en ${email} cuando comiencen las reservas en Leonida.`;
+                formFeedback.classList.remove('hidden');
+                emailInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
